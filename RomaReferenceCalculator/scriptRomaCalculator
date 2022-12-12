@@ -1,0 +1,80 @@
+//array of number buttons by their string values in html tags
+const number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+//array of operation buttons to grab them by their names inside html tags
+const operation = ['+', '-', '/', 'X'];
+// variable for output to calculator screen 
+const output = document.querySelector('.display p');
+
+
+// new variables
+let firstScreen = ''; // grab number buttons of first screen
+let secondScreen = ''; // grab number buttons of second screen after pressing operation buttons
+let operationButton = ''; // grab maths operation button values
+
+
+//assigning click event to all others buttons 
+const buttonClick = document.querySelector('.buttons');
+buttonClick.addEventListener('click', (event) => {
+//variable to grab text from html button when clicked 
+    const key = event.target.textContent;
+
+
+// check if "const number" array includes buttons 0-9 or dot then digit number is clicked
+     if (number.includes(key)) {
+// since second screen is empty and no operation buttons clicked - show first screen       
+     if (secondScreen ==='' && operationButton === '') {
+// fill the variable "firstScreen" with number buttons
+             firstScreen += key;  //+= takes the current and adds a new - no overwriting
+// pass the clicked values to the calculator's screen            
+            output.textContent = firstScreen;
+
+
+//since operation button is clicked - show the second screen
+         } else {
+             secondScreen += key;
+             output.textContent = secondScreen;
+         }
+            
+     }
+
+
+// check "const operation" array if operation buttons clicked + - / *
+      if (operation.includes(key)) {
+//press operation button to fill in the operationButton variable with values of number buttons
+         operationButton = key;
+         output.textContent = operationButton;
+     }
+  
+
+
+// equal buttons
+     if (key === '=') {
+         switch (operationButton) {
+             case "+":
+            // because they are strings - to get rid of concatination 
+                 firstScreen = (+firstScreen) + (+secondScreen);
+                 break;
+             case "-":
+                 firstScreen = firstScreen - secondScreen;
+                 break;
+             case "X":
+                 firstScreen = firstScreen * secondScreen;
+                 break;
+             case "/":
+                 firstScreen = firstScreen / secondScreen;
+                 break;
+         }
+         output.textContent = firstScreen;    
+     }
+
+//assigning click event to the erase button 
+const eraseFunction = document.querySelector('.ac');
+eraseFunction.addEventListener("click", (eraseAll));
+// create function to erase button
+function eraseAll () {
+   firstScreen = ''; 
+   secondScreen = ''; 
+   operationButton = ''; 
+   output.textContent = 0;
+}
+})
